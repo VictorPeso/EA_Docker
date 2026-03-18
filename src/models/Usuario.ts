@@ -8,15 +8,15 @@ export interface IUsuario {
     IsDeleted?: boolean;
 }
 
-export interface IUsuarioModel extends IUsuario, Document { }
+export interface IUsuarioModel extends IUsuario, Document {}
 
 const UsuarioSchema: Schema = new Schema(
     {
         name: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        libros: [{ type: Schema.Types.ObjectId, ref: 'Libro', default: [] }],
-        IsDeleted: { type: Boolean, default: false } 
+
+        IsDeleted: { type: Boolean, default: false }
     },
     {
         timestamps: true,
