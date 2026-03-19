@@ -19,9 +19,9 @@ const router = express.Router();
  *           type: string
  *           description: ObjectId de MongoDB
  *           example: "65f1c2a1b2c3d4e5f6789012"
- *         name:
+ *         fullName:
  *           type: string
- *           description: Nombre del autor
+ *           description: Nombre completo del autor
  *           example: "Robert C. Martin"
  *         IsDeleted:
  *           type: boolean
@@ -31,11 +31,11 @@ const router = express.Router();
  *       type: object
  *       description: Datos necesarios para crear o actualizar un autor
  *       required:
- *         - name
+ *         - fullName
  *       properties:
- *         name:
+ *         fullName:
  *           type: string
- *           description: Nombre del autor
+ *           description: Nombre completo del autor
  *           example: "Robert C. Martin"
  *         IsDeleted:
  *           type: boolean

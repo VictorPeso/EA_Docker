@@ -46,7 +46,7 @@ export const Schemas = {
             IsDeleted: Joi.boolean().optional()
         }),
         update: Joi.object<IAutor>({
-            fullName: Joi.string().required(),
+            fullName: Joi.string().optional(),
             IsDeleted: Joi.boolean().optional()
         })
     },
