@@ -39,7 +39,7 @@ npm run go
 ### 3. Ver la Documentación en Swagger 👀
 ¡No hace falta probar los Endpoints a ciegas con Postman! He preparado una interfaz gráfica para probar la API.
 Abre tu navegador una vez el servidor esté encendido y visita:
-👉 **[http://localhost:1337/api](http://localhost:1337/swagger)**
+👉 **[http://localhost:1337/swagger](http://localhost:1337/swagger)**
 
 ---
 
