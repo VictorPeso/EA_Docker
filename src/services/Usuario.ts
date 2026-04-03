@@ -35,6 +35,10 @@ const updateUsuario = async (usuarioId: string, data: Partial<IUsuario>): Promis
 };
 
 const deleteUsuario = async (usuarioId: string): Promise<IUsuarioModel | null> => {
+    return await Usuario.findByIdAndUpdate(usuarioId, { IsDeleted: true }, { new: true });
+};
+
+const permanentDeleteUsuario = async (usuarioId: string): Promise<IUsuarioModel | null> => {
     return await Usuario.findByIdAndDelete(usuarioId);
 };
 
@@ -42,4 +46,4 @@ const restoreUsuario = async (usuarioId: string): Promise<IUsuarioModel | null> 
     return await Usuario.findByIdAndUpdate(usuarioId, { IsDeleted: false }, { new: true });
 };
 
-export default { createUsuario, getUsuario, getAllUsuarios, getUsuarioByEmail, getAllUsuarios_NOT_Deleted, updateUsuario, deleteUsuario, restoreUsuario };
+export default { createUsuario, getUsuario, getAllUsuarios, getAllUsuarios_NOT_Deleted, updateUsuario, deleteUsuario, permanentDeleteUsuario, restoreUsuario };
