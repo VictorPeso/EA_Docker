@@ -46,4 +46,4 @@ const restoreUsuario = async (usuarioId: string): Promise<IUsuarioModel | null> 
     return await Usuario.findByIdAndUpdate(usuarioId, { IsDeleted: false }, { new: true });
 };
 
-export default { createUsuario, getUsuario, getAllUsuarios, getAllUsuarios_NOT_Deleted, updateUsuario, deleteUsuario, permanentDeleteUsuario, restoreUsuario };
+export default { createUsuario, getUsuario, getUsuarioByEmail, getAllUsuarios, getAllUsuarios_NOT_Deleted, updateUsuario, deleteUsuario, permanentDeleteUsuario, restoreUsuario };
