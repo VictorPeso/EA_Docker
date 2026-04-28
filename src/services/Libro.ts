@@ -5,13 +5,32 @@ import Logging from '../library/Logging';
 import Autor from './Autor';
 
 export async function createLibro(data: Partial<ILibro>): Promise<ILibro | null> {
+    let autores = [];
+    if (data.authors && Array.isArray(data.authors)) {
+        for (const author of data.authors) {
+            // Si es un string y NO es un ObjectId válido, lo tratamos como un nombre completo
+            if (typeof author === 'string' && !mongoose.Types.ObjectId.isValid(author)) {
+                let l_autor = await Autor.getByName(author);
+                if (!l_autor) l_autor = await Autor.createAutor({ fullName: author });
+                autores.push(l_autor._id);
+            } else {
+                autores.push(author);
+            }
+        }
+        data.authors = autores;
+    }
+
     const libro = new Libro({
         _id: new mongoose.Types.ObjectId(),
         ...data
     });
     return await libro.save();
 }
-export async function createLibroByIsbn(isbn: string): Promise<ILibro | null> {
+export async function createLibroByIsbn(isbn: string): Promise<ILibroModel | null> {
+    // Primero comprobamos que el libro existe o no. No poner esto al principio no me daba error, pero es por si acaso.
+    let isFound = await getLibroByIsbn(isbn);
+    if (isFound !== null) return isFound;
+    // Si no existe entonces lo creamos.
     let data: ILibro = await callOpenLibraryBookApi(isbn);
     //Logging.info(`Libro found: ${JSON.stringify(data)}`);
     let autores = [];
@@ -54,7 +73,7 @@ export async function restoreLibro(libroId: string): Promise<ILibro | null> {
     return await Libro.findByIdAndUpdate(libroId, { IsDeleted: false }, { new: true });
 }
 
-export async function getLibroByIsbn(isbn: string): Promise<ILibro | null> {
+export async function getLibroByIsbn(isbn: string): Promise<ILibroModel | null> {
     return await Libro.findOne({ isbn: isbn });
 }
 

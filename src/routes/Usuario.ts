@@ -2,6 +2,7 @@ import express from 'express';
 import controller from '../controllers/Usuario';
 import { Schemas, ValidateJoi } from '../middleware/Joi';
 import { isAdmin } from '../middleware/AuthRole';
+import { TokenValidation } from '../middleware/verifyToken';
 const router = express.Router();
 
 /**
@@ -102,7 +103,7 @@ const router = express.Router();
  *       422:
  *         description: Error de validación en los datos enviados
  */
-router.post('/', ValidateJoi(Schemas.usuario.create), controller.createUsuario);
+router.post('/', TokenValidation, isAdmin, ValidateJoi(Schemas.usuario.create), controller.createUsuario);
 
 /**
  * @openapi
@@ -150,7 +151,7 @@ router.get('/all', controller.getAllUsuarios);
  *       404:
  *         description: Usuario no encontrado
  */
-router.get('/:usuarioId', controller.getUsuario);
+router.get('/:usuarioId', TokenValidation, controller.getUsuario);
 
 /**
  * @openapi
@@ -170,7 +171,7 @@ router.get('/:usuarioId', controller.getUsuario);
  *               items:
  *                 $ref: '#/components/schemas/Usuario'
  */
-router.get('/', controller.getAllUsuarios_NOT_Deleted);
+router.get('/',TokenValidation, controller.getAllUsuarios_NOT_Deleted);
 
 /**
  * @openapi
@@ -207,7 +208,7 @@ router.get('/', controller.getAllUsuarios_NOT_Deleted);
  *       422:
  *         description: Error de validación en los datos enviados
  */
-router.put('/:usuarioId', isAdmin, ValidateJoi(Schemas.usuario.update), controller.updateUsuario);
+router.put('/:usuarioId',TokenValidation, isAdmin, ValidateJoi(Schemas.usuario.update), controller.updateUsuario);
 
 /**
  * @openapi
@@ -231,8 +232,8 @@ router.put('/:usuarioId', isAdmin, ValidateJoi(Schemas.usuario.update), controll
  *       404:
  *         description: Usuario no encontrado
  */
-router.delete('/:usuarioId', isAdmin, controller.deleteUsuario);
-router.delete('/permanent/:usuarioId', isAdmin, controller.permanentDeleteUsuario);
-router.put('/restore/:usuarioId', isAdmin, controller.restoreUsuario);
+router.delete('/:usuarioId', TokenValidation, isAdmin, controller.deleteUsuario);
+router.delete('/permanent/:usuarioId', TokenValidation, isAdmin, controller.permanentDeleteUsuario);
+router.put('/restore/:usuarioId', TokenValidation, isAdmin, controller.restoreUsuario);
 
 export default router;
