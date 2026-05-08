@@ -6,7 +6,7 @@ WORKDIR /app
 
 # 3. Copiamos los archivos de dependencias y el código fuente a la vez
 COPY package*.json ./
-COPY tsconfig.json ./
+COPY tsconfig*.json ./
 COPY . .
 
 # 4. Instalamos todas las dependencias (ahora TypeScript sí encontrará la carpeta src/)

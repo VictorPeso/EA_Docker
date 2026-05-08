@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+    # 1. La Base de Datos (Imagen oficial)
+    mongodb:
+        image: mongo:latest
+        container_name: univy_db
+        # Ya NO exponemos el puerto 27017 al host.
+        # MongoDB solo es accesible desde la red interna.
+        volumes:
+            - mongo_data:/data/db
+        networks:
+            - backend_internal
+        restart: unless-stopped
+
+    # 2. Tu Backend Node.js
+    backend:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: ViveBook_backend
+        ports:
+            - '1337:1337' # Mapeamos el puerto 1337 que usas en server.ts
+        depends_on:
+            - mongodb
+        env_file:
+            # Carga automáticamente las variables de tu .env
+            - .env
+        networks:
+            - backend_internal # Para hablar con MongoDB
+        restart: unless-stopped
+
+# Declaramos el volumen para que Mongo no pierda datos si se apaga
+volumes:
+    mongo_data:
+
+# Declaramos las redes
+networks:
+    backend_internal:
+        driver: bridge
+        #internal: true   # <-- Clave: esta red NO tiene salida a internet ni al host
